@@ -5,6 +5,7 @@ SmartLock API currently only has one model for locks. PUT, POST, GET all, and GE
 
 POST
 http://68.183.108.5:3000/api/locks/:id
+  
   takes: 
   {
     "status": Boolean
