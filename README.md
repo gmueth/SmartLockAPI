@@ -1,5 +1,8 @@
 SmartLock API currently only has one model for locks. PUT, POST, GET all, and GET by id are all supported 
 
+
+
+
 POST
 http://68.183.108.5:3000/api/locks/:id
   takes: 
@@ -14,13 +17,18 @@ http://68.183.108.5:3000/api/locks/:id
   }
 
 
+
+
 GET by id
 http://68.183.108.5:3000/api/locks/:id
- returns:
+
+returns:
   {
     "id": Number,
     "status", Boolean
   }
+
+
 
 
 GET all
@@ -33,6 +41,8 @@ returns array of all locks
     "status", Boolean
   }
   ]
+
+
 
 
 
