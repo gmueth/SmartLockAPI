@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const {User, validate} = require('../models/user');
+const {User, validate, validatePUT} = require('../models/user');
+const {Lock} = require('../models/lock');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
@@ -19,6 +20,20 @@ router.post('/', async (req, res) => {
     await user.save();
 
     res.send(_.pick(user, ['_id', 'name', 'email']));
+});
+
+router.put('/:id', async (req, res) => {
+    const { error } = validatePUT(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const lock = await Lock.findById(req.body.lockID);
+    if (!lock) return res.status(400).send('Could not find lock with given ID');
+
+    // User find by and update, push new lock to locks array
+    const user = await User.findByIdAndUpdate(req.params.id, {
+        $push: {locks: req.body.lockID}
+    }, {new: true});
+    res.send(user);
 });
 
 module.exports = router;
