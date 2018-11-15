@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+onst bcrypt = require('bcrypt');
 const _ = require('lodash');
 const {User, validate, validatePUT} = require('../models/user');
 const {Lock} = require('../models/lock');
@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    
+
     let user = await User.findOne({email: req.body.email});
     if (user) return res.status(400).send('User already registered.');
 
