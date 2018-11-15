@@ -22,11 +22,13 @@ router.put('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-  let lock = new Lock({ status: req.body.status });
-  lock = await lock.save();
+  const lock = new Lock({ status: req.body.status });
+  
+  await lock.save();
+  
   res.send(lock);
 });
 
