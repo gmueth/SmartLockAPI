@@ -1,10 +1,15 @@
-onst bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const {User, validate, validatePUT} = require('../models/user');
 const {Lock} = require('../models/lock');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
+
+router.get('/', async (req, res) => {
+	const users = await User.find();
+	res.send(users);
+});
 
 router.post('/', async (req, res) => {
     const { error } = validate(req.body);
