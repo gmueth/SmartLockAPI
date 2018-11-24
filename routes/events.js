@@ -3,6 +3,11 @@ const router = express.Router();
 const {Event, validate} = require('../models/event');
 const {Lock} = require('../models/lock');
 
+router.get('/', async (req, res) => {
+    const events = await Event.find();
+    res.send(events);
+});
+
 router.post('/', async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
