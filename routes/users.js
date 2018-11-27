@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const {User, validate, validatePUT} = require('../models/user');
@@ -34,6 +35,22 @@ router.post('/', async (req, res) => {
     await user.save();
 
     res.send(_.pick(user, ['_id', 'name', 'email']));
+});
+
+router.post('/locks/:id', auth, async (req, res) => {
+    const { error } = validatePUT(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    let user = await User.findById(req.params.id);
+    if(!user) return res.status(404).send('User with given ID was not found');
+    
+    const lock = await Lock.findById(req.body.lockID);
+    if(!lock) return res.status(400).send('Could not find lock with give ID');
+
+    user = await User.findByIdAndUpdate(req.params.id, {
+        $push: {locks: req.body.lockID}
+    }, {new: true});
+    res.send(user);
 });
 
 router.put('/:id', async (req, res) => {
