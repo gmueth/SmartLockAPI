@@ -38,8 +38,6 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/locks/:id', auth, async (req, res) => {
-    const { error } = validatePUT(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
 
     let user = await User.findById(req.params.id);
     if(!user) return res.status(404).send('User with given ID was not found');
